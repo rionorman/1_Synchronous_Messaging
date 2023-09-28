@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+
+  # Web Server Service
+  nginx_proto_1:
+    image: nginx
+    container_name: nginx_proto_1
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/sites-available/:/etc/nginx/sites-available/
+    depends_on:
+      - app_proto_1
+      - mysql_proto_1A
+      - mysql_proto_1B
+    networks:
+      - net_proto_1
+
+  #Database Service
+  mysql_proto_1A:
+    image : mysql
+    container_name : mysql_proto_1A
+    volumes:
+      - ./mysql/data_1A:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dikosongkan
+    networks:
+      - net_proto_1
+
+  mysql_proto_1B:
+    image : mysql
+    container_name : mysql_proto_1B
+    volumes:
+      - ./mysql/data_1B:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dikosongkan
+    networks:
+      - net_proto_1
+  
+  app_proto_1:
+    container_name: app_proto_1
+    build: 
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www
+    working_dir: /var/www
+    networks:
+      - net_proto_1
+
+  # Adminer Service
+  adminer_proto_1:
+    image: adminer
+    container_name: adminer_proto_1
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql_proto_1A
+      - mysql_proto_1B
+    networks:
+      - net_proto_1
+
+  # micro integrator  
+  wso2mi_proto_1:
+    image: wso2/wso2mi:4.0.0-ubuntu
+    container_name: wso2mi_proto_1
+    # ports:
+    #   - "8290:8290"
+    #   - "8253:8253"
+    #   - "5005:5005"
+    volumes:
+      - ./wso2mi/carbonapps:/home/wso2carbon/wso2mi-4.0.0/repository/deployment/server/carbonapps
+    networks:
+      - net_proto_1
+  
+# Network Service
+networks:
+  net_proto_1:
+    driver: "bridge"
+#   host:
+#     ipam:
+#       driver: default
+#       config:
+#         - subnet: 172.30.0.0/16
