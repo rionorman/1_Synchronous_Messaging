@@ -80,9 +80,9 @@ services:
 # Network Service
 networks:
   net_proto_1:
-    driver: "bridge"
-#   host:
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: 172.30.0.0/16
+  #   driver: "bridge"
+  # host:
+  #   ipam:
+  #     driver: default
+  #     config:
+  #       - subnet: 172.30.0.0/16
