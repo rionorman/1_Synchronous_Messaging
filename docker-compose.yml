@@ -80,7 +80,7 @@ services:
 # Network Service
 networks:
   net_proto_1:
-  #   driver: "bridge"
+    driver: default
   # host:
   #   ipam:
   #     driver: default
