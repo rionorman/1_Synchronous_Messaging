@@ -17,8 +17,7 @@ services:
       - app_proto_1
       - mysql_proto_1A
       - mysql_proto_1B
-    networks:
-      - net_proto_1
+    network_mode : "host"
 
   #Database Service
   mysql_proto_1A:
@@ -28,8 +27,7 @@ services:
       - ./mysql/data_1A:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: dikosongkan
-    networks:
-      - net_proto_1
+    network_mode : "host"
 
   mysql_proto_1B:
     image : mysql
@@ -38,8 +36,7 @@ services:
       - ./mysql/data_1B:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: dikosongkan
-    networks:
-      - net_proto_1
+    network_mode : "host"
   
   app_proto_1:
     container_name: app_proto_1
@@ -49,8 +46,7 @@ services:
     volumes:
       - ./src:/var/www
     working_dir: /var/www
-    networks:
-      - net_proto_1
+    network_mode : "host"
 
   # Adminer Service
   adminer_proto_1:
@@ -61,8 +57,7 @@ services:
     depends_on:
       - mysql_proto_1A
       - mysql_proto_1B
-    networks:
-      - net_proto_1
+    network_mode : "host"
 
   # micro integrator  
   wso2mi_proto_1:
@@ -70,10 +65,4 @@ services:
     container_name: wso2mi_proto_1
     volumes:
       - ./wso2mi/carbonapps:/home/wso2carbon/wso2mi-4.0.0/repository/deployment/server/carbonapps
-    networks:
-      - net_proto_1
-
-# Network Service
-networks:
-  net_proto_1:
-    driver: "bridge"
+    network_mode : "host"
