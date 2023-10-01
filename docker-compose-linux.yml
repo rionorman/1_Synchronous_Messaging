@@ -7,8 +7,8 @@ services:
     image: nginx
     container_name: nginx_proto_1
     ports:
-      - "8001:8001"
-      - "8002:8002"
+      - "13001:13001"
+      - "13002:13002"
     volumes:
       - ./src:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
@@ -53,7 +53,7 @@ services:
     image: adminer
     container_name: adminer_proto_1
     ports:
-      - "8081:8080"
+      - "13081:8080"
     depends_on:
       - mysql_proto_1A
       - mysql_proto_1B
